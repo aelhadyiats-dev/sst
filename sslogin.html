@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+        input, select { margin: 10px; padding: 10px; width: 200px; }
+        button { padding: 10px 20px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h2>Login</h2>
+    <input type="password" id="password" placeholder="Password"><br>
+    <select id="language-select">
+        <option value="">-- اختر لغة الاختبار --</option>
+        <option value="english_test.html">English Test الاختبار باللغة الانجليزية</option>
+        <option value="arabic_test.html">اختبار عربي</option>
+    </select><br>
+    <button onclick="checkLogin()">Login</button>
+
+    <p id="error" style="color:red;"></p>
+
+    <script>
+        // Define the mapping from password prefix to the school's JSON file.
+        const schoolFiles = {
+            "a": "school1_users.json",
+            "b": "school2_users.json",
+            "c": "school3_users.json",
+            "d": "school4_users.json",
+            "e": "school5_users.json",
+            "f": "school6_users.json",
+            "g": "school7_users.json",
+            "h": "school8_users.json",
+        };
+
+        async function checkLogin() {
+            let pass = document.getElementById("password").value;
+            let language = document.getElementById("language-select").value;
+            let errorMsg = document.getElementById("error");
+
+            if (!pass || !language) {
+                errorMsg.innerText = "ادخل الباسورد بشكل صحيح واختر لغة الاختبار";
+                return;
+            }
+
+            const passPrefix = pass.charAt(0);
+            const schoolFile = schoolFiles[passPrefix];
+
+            if (!schoolFile) {
+                errorMsg.innerText = "❌ Wrong password!";
+                return;
+            }
+
+            try {
+                const response = await fetch(schoolFile);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const users = await response.json();
+
+                if (users.hasOwnProperty(pass)) {
+                    // Redirect to the selected language page
+                    window.location.href = language;
+                } else {
+                    errorMsg.innerText = "❌ Wrong password!";
+                }
+            } catch (error) {
+                console.error("Failed to load user data:", error);
+                errorMsg.innerText = "❌ An error occurred. Please try again later.";
+            }
+        }
+    </script>
+</body>
+</html>
