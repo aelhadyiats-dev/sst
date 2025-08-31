@@ -40,7 +40,7 @@
             let errorMsg = document.getElementById("error");
 
             if (!pass || !language) {
-                errorMsg.innerText = "ادخل الباسورد بشكل صحيح واختر لغة الاختبار";
+                errorMsg.innerText = "ادخل الرقم السري بشكل صحيح واختر لغة الاختبار";
                 return;
             }
 
@@ -48,14 +48,14 @@
             const schoolFile = schoolFiles[passPrefix];
 
             if (!schoolFile) {
-                errorMsg.innerText = "❌ Wrong password!";
+                errorMsg.innerText = "❌الرقم السري غير صحيح!";
                 return;
             }
 
             try {
                 const response = await fetch(schoolFile);
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error('لا يوجد اتصال بالانترنت');
                 }
                 const users = await response.json();
 
@@ -63,11 +63,11 @@
                     // Redirect to the selected language page
                     window.location.href = language;
                 } else {
-                    errorMsg.innerText = "❌ Wrong password!";
+                    errorMsg.innerText = "❌ الرقم السري غير صحيح!";
                 }
             } catch (error) {
                 console.error("Failed to load user data:", error);
-                errorMsg.innerText = "❌ An error occurred. Please try again later.";
+                errorMsg.innerText = "❌حاول مرة أخرى.";
             }
         }
     </script>
