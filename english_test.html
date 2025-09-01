@@ -2,13 +2,39 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>الامتحان باللغة الانجليزية</title>
+  <title>الامتحان باللغة العربية</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden; /* لمنع ظهور شريط التمرير المزدوج */
+    }
+    iframe {
+      border: none;
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
 </head>
 <body>
-      <script>
-    setTimeout(function(){
-        window.location.href = "https://forms.gle/f5TTAQMNsvPsPUV97";
-    }, 3000); // 3000 ملي ثانية = 3 ثواني
-    </script>
+  <h1>جاري تحميل الامتحان...</h1>
+  <p>الرجاء الانتظار 3 ثوانٍ.</p>
+
+  <script>
+    setTimeout(function() {
+      // إخفاء المحتوى الأصلي للصفحة
+      document.body.innerHTML = '';
+      
+      // إنشاء عنصر iframe
+      const iframe = document.createElement('iframe');
+      
+      // تعيين مصدر iframe إلى رابط النموذج
+      iframe.src = "https://forms.gle/f5TTAQMNsvPsPUV97";
+      
+      // إضافة iframe إلى جسم الصفحة
+      document.body.appendChild(iframe);
+      
+    }, 3000); // 3000 ملي ثانية = 3 ثوانٍ
+  </script>
 </body>
 </html>
