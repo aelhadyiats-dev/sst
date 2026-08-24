@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+
+        input,
+        select {
+            margin: 10px;
+            padding: 10px;
+            width: 200px;
+        }
+
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Login</h2>
+
+    <input
+        type="password"
+        id="password"
+        placeholder="Password"
+    >
+    <br>
+
+    <select id="language-select">
+        <option value="">-- اختر لغة الاختبار --</option>
+        <option value="penglish_test.html">
+            English Test الاختبار باللغة الانجليزية
+        </option>
+        <option value="parabic_test.html">
+            اختبار عربي
+        </option>
+    </select>
+
+    <br>
+
+    <button onclick="checkLogin()">Login</button>
+
+    <p id="error" style="color:red;"></p>
+
+    <script>
+
+        async function checkLogin() {
+
+            const pass = document
+                .getElementById("password")
+                .value
+                .trim();
+
+            const language = document
+                .getElementById("language-select")
+                .value;
+
+            const errorMsg = document
+                .getElementById("error");
+
+
+            // التحقق من إدخال البيانات
+            if (!pass || !language) {
+
+                errorMsg.innerText =
+                    "ادخل الرقم السري بشكل صحيح واختر لغة الاختبار";
+
+                return;
+            }
+
+
+            try {
+
+                // تحميل ملف JSON الواحد
+                const response = await fetch("pusers.json");
+
+
+                // التأكد من نجاح تحميل الملف
+                if (!response.ok) {
+
+                    throw new Error(
+                        "تعذر تحميل ملف المستخدمين"
+                    );
+                }
+
+
+                // قراءة بيانات JSON
+                const users = await response.json();
+
+
+                // التحقق من وجود الرقم السري
+                if (
+                    Object.prototype.hasOwnProperty.call(
+                        users,
+                        pass
+                    )
+                ) {
+
+                    // الدخول إلى صفحة الاختبار
+                    window.location.href = language;
+
+                } else {
+
+                    errorMsg.innerText =
+                        "❌ الرقم السري غير صحيح!";
+                }
+
+
+            } catch (error) {
+
+                console.error(
+                    "Failed to load user data:",
+                    error
+                );
+
+                errorMsg.innerText =
+                    "❌ حدث خطأ. حاول مرة أخرى.";
+            }
+        }
+
+    </script>
+
+</body>
+</html>
